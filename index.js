@@ -27,6 +27,9 @@ var j = schedule.scheduleJob({second: 10}, function(){
         dbInstance.getUsers()
         .then(rsp => console.log(rsp))
         .catch(err => console.log('an err: ', err))
+        
+        dbInstance.getPeople()
+        .then(rsp => console.log("Response: ", rsp))
+        .catch(err => console.log('Get people err: ', err))
     }
-
 });
