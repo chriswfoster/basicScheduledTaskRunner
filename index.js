@@ -25,11 +25,31 @@ var j = schedule.scheduleJob({second: 10}, function(){
     console.log("Running the task now, at" , moment(new Date()).format('HH:mm'), ' oclock');
     if(dbInstance) {
         dbInstance.getUsers()
-        .then(rsp => console.log(rsp))
+        .then(rsp => {
+            // console.log(rsp)
+            const updatedUserIds = []
+            let updatedUsers = [];
+            let UPDATE_QUERY = `
+                UPDATE users 
+                SET password = CASE 
+            `
+            rsp.forEach(user => {
+                UPDATE_QUERY += ` WHEN id =`
+                // updatedUserIds.push(user.id)
+                // updatedUsers.push(
+                //    `${Math.floor(Math.random() * 99999)}`
+                // )
+                dbInstance['users'].update({id: user.id}, {password: `${Math.floor(Math.random() * 9999)}`}) 
+                .then(resp => console.log('done: ', resp))
+                .catch(err => console.log('err : ', err))
+            })
+
+           
+        })
         .catch(err => console.log('an err: ', err))
         
-        dbInstance.getPeople()
-        .then(rsp => console.log("Response: ", rsp))
-        .catch(err => console.log('Get people err: ', err))
+        // dbInstance.getPeople()
+        // .then(rsp => console.log("Response: ", rsp))
+        // .catch(err => console.log('Get people err: ', err))
     }
 });
